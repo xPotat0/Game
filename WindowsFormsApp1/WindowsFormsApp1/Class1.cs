@@ -247,8 +247,6 @@ namespace WindowsFormsApp1
             HuntImg = new Bitmap(folder + "\\huntsman.png");
             DoorImg = new Bitmap(folder + "\\Door.png");
             music = new SoundPlayer(folder + "\\Title.wav");
-            music.LoadAsync();
-            music.PlayLooping();
 
             player = new Player(new Size(192, 192), 196*3, 196*3, HeroImg);
             pope = new Pope(new Size(196, 196), 196*2, 196*5, PopeImg);
@@ -284,6 +282,7 @@ namespace WindowsFormsApp1
             timerForPope.Start();
 
             this.Paint += new PaintEventHandler(OnPaint);
+            Task mus = Task.Run(() => music.PlayLooping());
 
 
             this.DoubleBuffered = true;
