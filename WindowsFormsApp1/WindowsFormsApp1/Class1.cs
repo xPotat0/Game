@@ -12,13 +12,12 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        private bool isPressedAnyKey = false, isPressedleft = false, isPressedUp = false, isPressedRight = false, isPressedDown = false,
+        private bool isPressedAnyKey = false,
             isPressedAct = false, MovementLock = false, openDialog = false, canContinue = true,
             openInv = false, openNote = false, CanOpenNote = false, openHELP;
         private bool IsGoingAnimation = false;
-        private bool left = false, up = false, right = false, down = false;
+        private bool left = false , right = false;
         private int x = 0, y = 0;
-        Graphics grap;
         Player player;
         Pope pope;
         Huntsman huntsman;
@@ -51,25 +50,25 @@ namespace WindowsFormsApp1
                 { "wt","wt","5","5","5","g","8","2","mg","5","5","mg","5","wt","wt"},
                 { "wt","wt","5","lg","5","5","8","2","5","5","5","g","5","wt","wt"},
                 { "wt","wt","5","5","5","5","8","2","g","5","mg","5","g","wt","wt"},
-                { "wt","wt","5","wl","wlh","5","8","2","5","lg","5","5","5","wt","wt"},
-                { "wt","wt","5","wc","wch","5","8","2","5","b","g","5","5","wt","wt"},
-                { "wt","wt","5","wr","wrh","5","8","2","5","5","5","5","5","wt","wt"},
-                { "wt","wt","5","5","5","5","8","2","5","g","5","5","lg","wt","wt"},
+                { "wt","wt","5","wl","wlh","5","8","2","lg","lg","5","5","5","wt","wt"},
+                { "wt","wt","5","wc","wch","mg","8","2","g","b","g","5","5","wt","wt"},
+                { "wt","wt","5","wr","wrh","lg","8","2","g","5","5","5","5","wt","wt"},
+                { "wt","wt","5","5","g","lg","8","2","lb","g","5","5","lg","wt","wt"},
                 { "wt","w_dor","5","11","13","5","8","2","5","g","5","5","g","wt","wt"},
                 { "wt","wt","lb","8","3","6","9","2","g","5","5","g","5","wt","wt"},
-                { "wt","wt","5","12","4","4","4","14","5","5","5","mg","5","wt","wt"},
-                { "wt","wt","5","g","5","5","g","b","lg","5","5","5","5","wt","wt"},
-                { "wt","wt","5","5","g","5","5","5","g","5","g","5","5","wt","wt"},
-                { "wt","wt","5","5","5","mg","5","5","5","5","lg","lb","5","wt","wt"},
-                { "wt","wt","5","g","5","5","lg","5","5","5","5","mg","5","wt","wt"},
-                { "wt","wt","5","5","g","5","5","5","lg","g","5","5","5","wt","wt"},
-                { "wt","wt","5","g","5","g","5","5","mg","5","5","lg","lg","wt","wt"},
-                { "wt","wt","wt","5","5","5","g","5","5","g","5","mg","5","wt","wt"},
-                { "wt","wt","wt","wt","5","5","5","5","5","5","g","5","5","wt","wt"},
+                { "wt","wt","5","12","4","4","7","2","5","g","5","mg","5","wt","wt"},
+                { "wt","wt","5","g","5","g","8","2","lg","5","5","5","5","wt","wt"},
+                { "wt","wt","mg","5","g","5","8","2","g","5","g","5","5","wt","wt"},
+                { "wt","wt","lg","5","5","mg","8","2","5","5","lg","lb","5","wt","wt"},
+                { "wt","wt","5","g","5","lg","12","14","5","5","5","mg","5","wt","wt"},
+                { "wt","wt","5","5","g","5","lg","5","lg","g","5","5","5","wt","wt"},
+                { "wt","wt","5","g","5","g","5","lg","mg","5","5","lg","lg","wt","wt"},
+                { "wt","wt","wt","5","5","5","g","g","5","g","5","mg","5","wt","wt"},
+                { "wt","wt","wt","wt","lg","5","g","5","5","5","g","5","5","wt","wt"},
                 { "wt","wt","wt","wt","wt","wt","wt","5","wt","wt","wt","wt","wt","wt","wt"},
                 { "wt","wt","5","wt","wt","wt","wt","w_dr_lk","wt","wt","wt","wt","wt","wt","wt"},
-                { "wt","wt","5","5","5","wt","wt","wt","wt","wt","wt","5","5","wt","wt"},
-                { "wt","wt","5","5","5","5","5","5","5","5","5","5","5","wt","wt"},
+                { "wt","wt","5","5","wt","wt","wt","5","wt","wt","wt","wt","5","wt","wt"},
+                { "wt","wt","5","5","wt","wt","wt","5","wt","wt","wt","5","5","wt","wt"},
                 { "wt","wt","5","5","5","5","5","5","5","5","5","5","5","wt","wt"},
                 { "wt","wt","5","5","5","5","5","5","5","5","5","5","5","wt","wt"},
                 { "wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt"},
@@ -110,7 +109,7 @@ namespace WindowsFormsApp1
             {"wt","wt","5","5","5","w10","5","5","5","5","5","5","wt","wt","wt","wt","wt","wt","wt","wt" },
             {"wt","wt","5","5","5","w20","lg","mg","wt","5","5","5","5","wt","5","5","5","5","wt","wt" },
             {"wt","wt","5","5","5","w31","g","5","wt","wt","wt","5","5","wt","5","5","5","5","wt","wt" },
-            {"wt","wt","5","5","5","0","5","g","wt","wt","wt","wt","wt","wt","wt","5","wt","wt","wt","wt" },
+            {"wt","wt","5","5","5","w_bridge","5","g","wt","wt","wt","wt","wt","wt","wt","5","wt","wt","wt","wt" },
             {"wt","wt","5","5","5","w21","g","5","wt","wt","5","wt","wt","wt","wt","5","wt","wt","wt","wt" },
             {"wt","wt","5","5","5","w31","5","g","5","5","5","5","5","5","wt","5","wt","5","wt","wt" },
             {"wt","wt","5","5","5","w10","lg","5","wt","5","5","wt","wt","g","5","g","wt","wt","wt","wt" },
@@ -181,14 +180,14 @@ namespace WindowsFormsApp1
             {"wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt" },
             {"wt", "wt", "wt", "5", "lg", "5", "mg", "5", "mg", "g", "wt" ,"wt"},
             {"wt", "wt", "wt", "5", "g", "5", "5", "lg", "5", "5", "wt", "wt"},
-            {"wt", "wt", "wt", "mg", "g", "lg", "g", "5", "lb", "5", "wt", "wt"},
+            {"wt", "wt", "wt", "mg", "g", "lg", "g", "5", "lb", "mg", "wt", "wt"},
             {"wt", "wt", "wt", "5", "5", "5", "5", "lg", "8", "2", "wt", "wt"},
             {"5", "w_dor", "5", "11", "6", "6", "6", "6", "9", "2", "wt", "wt"},
             {"wt", "wt", "wt", "12", "4", "4", "4", "4", "7", "2","wt", "wt"},
             {"wt", "wt", "wt" ,"5", "5", "5", "5", "5", "8", "2", "wt", "wt"},
             {"wt","wt","w_le", "w_h_lr", "w_h_lu", "w_h_ld", "5", "5", "9", "2", "wt", "wt"},
-            {"wt","wt","w_ce", "w_r_e", "w_h_w", "w_h_e", "5", "g", "mg", "5", "wt", "wt"},
-            {"wt","wt","w_re", "w_h_rr", "w_h_ru", "w_h_rd", "5", "g", "5", "5", "wt", "wt"},
+            {"wt","wt","w_ce", "w_r_e", "w_h_w", "w_h_e", "5", "g", "4", "14", "wt", "wt"},
+            {"wt","wt","w_re", "w_h_rr", "w_h_ru", "w_h_rd", "5", "g", "lg", "g", "wt", "wt"},
             {"wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt" },
             {"wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt" }
         };
@@ -361,9 +360,7 @@ namespace WindowsFormsApp1
             if (e.KeyCode == Keys.Q) { if (CanOpenNote) { if (openNote) openNote = false; else openNote = true; } }
             if (e.KeyCode == Keys.H) { if (openHELP) openHELP = false; else openHELP = true; }
             if (e.KeyCode == Keys.Left) { left = true; }
-            if (e.KeyCode == Keys.Up) { up = true; }
             if (e.KeyCode == Keys.Right) { right = true; }
-            if (e.KeyCode == Keys.Down) { down = true; }
             if (e.KeyCode == Keys.E && canContinue && check()) 
             {
                 if (openDialog && pope.InBound)
@@ -395,7 +392,7 @@ namespace WindowsFormsApp1
                     }
                     return true;
                 }
-                if (player.progressBar > 14 && player.progressBar < 21)
+                else if (player.progressBar > 14 && player.progressBar < 21)
                 {
                     if (Dialog.DialogsPope.dialogStatus == 6)
                     {
@@ -415,7 +412,7 @@ namespace WindowsFormsApp1
                     }
                     return true;
                 }
-                if(player.progressBar == 25)
+                else if(player.progressBar == 25)
                 {
                     if(Dialog.DialogsPope.dialogStatus == 9)
                     {
@@ -439,7 +436,7 @@ namespace WindowsFormsApp1
                     }
                     return true;
                 }
-                if(player.progressBar == 30)
+                else if(player.progressBar == 30)
                 {
                     if(Dialog.DialogsPope.dialogStatus == 11)
                     {
@@ -447,6 +444,11 @@ namespace WindowsFormsApp1
                         openDialog = false;
                     }
                     return true;
+                }
+                else
+                {
+                    MovementLock = false;
+                    openDialog = false;
                 }
             }
             if(huntsman.InBound)
@@ -472,13 +474,13 @@ namespace WindowsFormsApp1
                     }
                         return true;
                 }
-                if(player.progressBar == 15)
+                else if(player.progressBar == 15)
                 {
                     MovementLock = false;
                     openDialog = false;
                     Dialog.DialogsHunt.dialogStatus++;
                 }
-                if(player.progressBar == 30)
+                else if(player.progressBar == 30)
                 {
                     if (Dialog.DialogsHunt.dialogStatus == 7 && Inventory.InInventory("HealingPotion"))
                         player.progressBar += 5;
@@ -490,7 +492,7 @@ namespace WindowsFormsApp1
 
                     return true;
                 }
-                if (player.progressBar == 35)
+                else if (player.progressBar == 35)
                 {
                     if (Dialog.DialogsHunt.dialogStatus == 8)
                     {
@@ -500,12 +502,12 @@ namespace WindowsFormsApp1
                     }
                     return true;
                 }
-                if(player.progressBar == 40)
+                else if(player.progressBar == 40)
                 {
                     MovementLock = false;
                     openDialog = false;
                 }
-                if(player.progressBar == 45)
+                else if(player.progressBar == 45)
                 {
                     if(Dialog.DialogsHunt.dialogStatus == 10)
                     {
@@ -514,6 +516,12 @@ namespace WindowsFormsApp1
                         player.progressBar += 5;
                     }
                     return true;
+                }
+                else
+                {
+                    MovementLock = false;
+                    openDialog = false;
+                    return false;
                 }
 
             }
@@ -566,7 +574,6 @@ namespace WindowsFormsApp1
                 if (player.up_left_x > 400 && player.up_left_x < 196 * width - 685)
                     delta.X -= player.dirX;
             }
-            //Inventory.Drop("Key");
         }
 
         private void PlayerUp()
@@ -591,9 +598,7 @@ namespace WindowsFormsApp1
             if (e.KeyCode == Keys.D) { isPressedAnyKey = false; player.dirX = 0; }
             if (e.KeyCode == Keys.F) { isPressedAct = false; }
             if (e.KeyCode == Keys.Left) { left = false; }
-            if (e.KeyCode == Keys.Up) { up = false; }
             if (e.KeyCode == Keys.Right) { right = false; }
-            if (e.KeyCode == Keys.Down) { down = false; }
         }
 
         private void playStatic(Graphics grap)
@@ -846,6 +851,17 @@ namespace WindowsFormsApp1
                 gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 2, 196 * 8), new Size(196, 196)), GraphicsUnit.Pixel);
             else if (CurrentMap[x, y] == "w_str_dn")
                 gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 3, 196 * 8), new Size(196, 196)), GraphicsUnit.Pixel);
+            else if (CurrentMap[x, y] == "w_bridge")
+            {
+                if (player.progressBar < 35) gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 4, 196 * 8), new Size(196, 196)), GraphicsUnit.Pixel);
+                else
+                {
+                    CurrentMap[x, y] = "bridge";
+                    gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 5, 196 * 8), new Size(196, 196)), GraphicsUnit.Pixel);
+                }
+            }
+            else if(CurrentMap[x,y] == "bridge")
+                gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 5, 196 * 8), new Size(196, 196)), GraphicsUnit.Pixel);
             else
                 throw new Exception(Text = "Клетка не объявлена: " + CurrentMap[x, y] + x.ToString() + ":" + y.ToString());
         }
@@ -1567,8 +1583,6 @@ namespace WindowsFormsApp1
             upDoor.y = d - delta.Y;
             rightDoor.x = a - delta.X;
             rightDoor.y = b - delta.Y;
-            gr.DrawImage(GrassImg, a + 196, b + 196, new Rectangle(new Point(1176, 392), new Size(196, 196)), GraphicsUnit.Pixel);
-            gr.DrawImage(GrassImg, c + 196, d + 196, new Rectangle(new Point(1176, 392), new Size(196, 196)), GraphicsUnit.Pixel);
             // 
             heartflower1.Item1.x = -50 + delta.X;
             heartflower1.Item1.y = -50 + delta.Y;

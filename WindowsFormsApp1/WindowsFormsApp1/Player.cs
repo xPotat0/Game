@@ -11,38 +11,24 @@ namespace WindowsFormsApp1
     internal class Player
     {
         public Image _spritesAnimation;
-        public int up_left_x, up_left_y,up_right_x,up_right_y,down_left_x,down_left_y,down_right_x,down_right_y,dirX,dirY;
+        public int up_left_x, up_left_y,dirX,dirY;
         public Size _scale;
         public int currentFrame = 0;
         public int currentAnimation = 1;
         public Image part;
-       // public int speed;
         public int progressBar { get; set; }
         public Player(Size _scale,int _x, int _y, Image _spriteAnimation)
         {
             this._scale = _scale;
             this.up_left_x = _x;
             this.up_left_y = _y;
-            this.up_right_x = this.up_left_x + 192;
-            this.up_right_y = this.up_left_y;
-            this.down_left_x = this.up_left_x;
-            this.down_left_y = this.up_left_y + 192;
-            this.down_right_x =this.up_right_x + 192;
-            this.down_right_y = this.up_right_y + 192;
             this._spritesAnimation = _spriteAnimation;
-            //speed = 2;
         }
 
         public void move()
         {
             up_left_x += dirX;
             up_left_y += dirY;
-            up_right_x += dirX + 192;
-            up_right_y += dirY;
-            down_left_x += dirX;
-            down_left_y += dirY + 192;
-            down_right_x += dirX + 192;
-            down_right_y += dirY + 192;
         }  
 
         public void ChangeMap(int from, int to)
