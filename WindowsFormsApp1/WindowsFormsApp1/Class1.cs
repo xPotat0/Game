@@ -7,12 +7,13 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Resources;
 using System.Media;
+using System.Drawing.Text;
 
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        private bool isPressedAnyKey = false,
+        private bool isPressedAnyKey = false, prLeft = false, prRight = false, prDown = false, prUp = false,
             isPressedAct = false, MovementLock = false, openDialog = false, canContinue = true,
             openInv = false, openNote = false, CanOpenNote = false, openHELP;
         private bool IsGoingAnimation = false;
@@ -33,8 +34,10 @@ namespace WindowsFormsApp1
         Tuple<Item.Heartflower,bool> heartflower1;
         Tuple<Item.Heartflower, bool> heartflower2;
         Tuple<Item.Heartflower, bool> heartflower3;//Не забыть инициализировать новые объекты в Form1()
-        public static Image HeroImg, GrassImg, WallImg, Keyboard, InventoryGr,PopeImg,HuntImg,DialogIm,DoorImg;
+        public static Image HeroImg, GrassImg, WallImg, Keyboard, InventoryGr,PopeImg,HuntImg,DialogIm,DoorImg,etc;
         public static SoundPlayer music;
+        PrivateFontCollection fontCollection = new PrivateFontCollection();
+        Font font;
 
         public static int height = 7;
         public static int width = 7;
@@ -54,15 +57,15 @@ namespace WindowsFormsApp1
                 { "wt","wt","5","wc","wch","mg","8","2","g","b","g","5","5","wt","wt"},
                 { "wt","wt","5","wr","wrh","lg","8","2","g","5","5","5","5","wt","wt"},
                 { "wt","wt","5","5","g","lg","8","2","lb","g","5","5","lg","wt","wt"},
-                { "wt","w_dor","5","11","13","5","8","2","5","g","5","5","g","wt","wt"},
-                { "wt","wt","lb","8","3","6","9","2","g","5","5","g","5","wt","wt"},
-                { "wt","wt","5","12","4","4","7","2","5","g","5","mg","5","wt","wt"},
+                { "wt","wt","5","11","13","5","8","2","5","g","5","mg","g","wt","wt"},
+                { "wt","w_dor","11","9","3","6","9","2","g","5","5","g","5","wt","wt"},
+                { "wt","wt","12","4","4","4","7","2","5","g","5","mg","5","wt","wt"},
                 { "wt","wt","5","g","5","g","8","2","lg","5","5","5","5","wt","wt"},
-                { "wt","wt","mg","5","g","5","8","2","g","5","g","5","5","wt","wt"},
+                { "wt","wt","mg","5","g","5","8","2","g","lg","g","5","5","wt","wt"},
                 { "wt","wt","lg","5","5","mg","8","2","5","5","lg","lb","5","wt","wt"},
-                { "wt","wt","5","g","5","lg","12","14","5","5","5","mg","5","wt","wt"},
-                { "wt","wt","5","5","g","5","lg","5","lg","g","5","5","5","wt","wt"},
-                { "wt","wt","5","g","5","g","5","lg","mg","5","5","lg","lg","wt","wt"},
+                { "wt","wt","5","g","5","lg","8","2","g","5","5","mg","5","wt","wt"},
+                { "wt","wt","5","5","g","mg","8","2","lg","g","5","5","5","wt","wt"},
+                { "wt","wt","5","g","5","g","12","14","mg","5","5","lg","lg","wt","wt"},
                 { "wt","wt","wt","5","5","5","g","g","5","g","5","mg","5","wt","wt"},
                 { "wt","wt","wt","wt","lg","5","g","5","5","5","g","5","5","wt","wt"},
                 { "wt","wt","wt","wt","wt","wt","wt","5","wt","wt","wt","wt","wt","wt","wt"},
@@ -80,7 +83,7 @@ namespace WindowsFormsApp1
             {"wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt" },
             {"wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","w_dorl","wt","wt" },
             {"wt","wt","5","lg","5","5","wt","wt","5","wt","wt","wt","wt","wt","wt","wt","wt","lg","wt","wt" },
-            {"wt","wt","wt","g","mg","g","mg","lg","5","5","wt","wt","wt","wt","wt","wt","wt","g","wt","wt" },
+            {"wt","wt","wt","g","mg","g","mg","lg","5","5","wt","wt","wt","wt","wt","wt","g","g","wt","wt" },
             {"wt","wt","wt","5","5","lg","mg","lb","g","5","mg","5","wt","wt","wt","wt","5","lg","wt","wt" },
             {"wt","wt","wt","wt","he","5","wt","wt","wt","5","5","g","5","wt","5","lg","g","5","wt","wt" },
             {"wt","wt","wt","wt","lg","wt","wt","wt","wt","5","5","5","5","lg","5","lg","wt","wt","wt","wt" },
@@ -103,20 +106,20 @@ namespace WindowsFormsApp1
         {
             {"wt","wt","wt","wt","wt","w10","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt" },
             {"wt","wt","wt","wt","wt","w30","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w10","wt","wt","wt","5","5","5","5","5","5","5","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w20","lg","wt","wt","5","5","5","wt","wt","wt","5","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w31","g","5","wt","5","5","wt","wt","wt","5","5","5","5","w_dor","wt" },
-            {"wt","wt","5","5","5","w10","5","5","5","5","5","5","wt","wt","wt","wt","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w20","lg","mg","wt","5","5","5","5","wt","5","5","5","5","wt","wt" },
-            {"wt","wt","5","5","5","w31","g","5","wt","wt","wt","5","5","wt","5","5","5","5","wt","wt" },
-            {"wt","wt","5","5","5","w_bridge","5","g","wt","wt","wt","wt","wt","wt","wt","5","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w21","g","5","wt","wt","5","wt","wt","wt","wt","5","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w31","5","g","5","5","5","5","5","5","wt","5","wt","5","wt","wt" },
-            {"wt","wt","5","5","5","w10","lg","5","wt","5","5","wt","wt","g","5","g","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w20","5","5","wt","5","5","wt","wt","wt","lg","5","wt","wt","wt","wt" },
+            {"wt","wt","5","5","5","w10","wt","wt","wt","mg","g","lg","5","lg","g","5","wt","wt","wt","wt" },
+            {"wt","wt","5","5","5","w20","lg","wt","wt","g","mg","g","wt","wt","wt","mg","wt","wt","wt","wt" },
+            {"wt","wt","lg","5","lg","w31","g","5","wt","5","5","wt","wt","wt","5","lg","g","5","w_dor","wt" },
+            {"wt","wt","5","g","mg","w10","5","g","lg","5","lg","mg","wt","wt","wt","wt","wt","wt","wt","wt" },
+            {"wt","wt","b","b","b","w20","lg","mg","wt","5","g","5","lg","wt","5","5","mg","5","wt","wt" },
+            {"wt","wt","b","lg","lg","w31","g","5","wt","wt","wt","5","5","wt","5","5","5","g","wt","wt" },
+            {"wt","wt","b","lg","5","w_bridge","5","g","wt","wt","wt","wt","wt","wt","wt","g","wt","wt","wt","wt" },
+            {"wt","wt","b","mg","g","w21","g","5","wt","wt","5","wt","wt","wt","wt","5","wt","wt","wt","wt" },
+            {"wt","wt","b","b","g","w31","5","g","g","5","lg","g","5","5","wt","5","wt","5","wt","wt" },
+            {"wt","wt","mg","mg","lg","w10","lg","5","wt","mg","5","wt","wt","g","5","g","wt","wt","wt","wt" },
+            {"wt","wt","lg","lg","5","w20","5","5","wt","5","5","wt","wt","wt","lg","5","wt","wt","wt","wt" },
             {"wt","wt","5","5","5","w30","lg","lb","wt","mg","wt","wt","wt","wt","5","5","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w11","g","lg","wt","5","wt","he","b","wt","5","lg","wt","wt","wt","wt" },
-            {"wt","wt","5","5","5","w20","lg","wt","wt","lg","wt","b","lb","wt","5","5","lg","5","wt","wt" },
+            {"wt","wt","5","5","5","w11","g","lg","wt","5","wt","he","b","wt","g","lg","wt","wt","wt","wt" },
+            {"wt","wt","5","5","5","w20","lg","wt","wt","lg","wt","b","lb","wt","5","mg","lg","5","wt","wt" },
             {"wt","wt","5","5","5","w30","wt","wt","wt","g","lg","g","g","wt","wt","wt","g","wt","wt","wt" },
             {"wt","wt","5","5","5","w10","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","w_dorr","wt","wt","wt" },
             {"wt","wt","wt","wt","wt","w20","wt","wt","wt","wt","wt","wt","wt","wt","wt","wt","5","wt","wt","wt" },
@@ -129,12 +132,12 @@ namespace WindowsFormsApp1
             {"wt","wt","wt","wt","wt","wt","5","wt","wt","wt" },
             {"wt","w_dor","5","wt","wt","wt","w_dl_lk","wt","wt","wt" },
             {"wt","wt","lg","g","wt","wt","5","wt","wt","wt" },
-            {"wt","wt","mg","mg","g","5","5","wt","wt","wt" },
+            {"wt","wt","mg","mg","g","g",",g","wt","wt","wt" },
             {"wt","wt","wt","5","mg","5","mg","5","w_dor","wt" },
-            {"wt","wt","wt","5","lg","g","5","wt","wt","wt" },
+            {"wt","wt","wt","lg","lg","g","lg","wt","wt","wt" },
             {"wt","wt","wt","g","5","lg","5","wt","wt","wt" },
             {"wt","wt","wt","5","mg","5","g","wt","wt","wt" },
-            {"wt","wt","wt","wt","wt","5","5","wt","wt","wt" },
+            {"wt","wt","wt","wt","wt","lg","mg","wt","wt","wt" },
             {"wt","wt","wt","wt","wt","wt","w_dorr","wt","wt","wt" },
             {"wt","wt","wt","wt","wt","5","wt","wt","wt","wt" }
         };
@@ -158,7 +161,7 @@ namespace WindowsFormsApp1
             {"0","wfl","wfl","wfl","wfl","wfl","wfl","wfl","wfl","wchl","w_w","0" },
             {"0","w_w","f","f","w_w","f","f","f","f","f","w_w","0" },
             {"0","w_w","f","f","wX","f","f","f","f","f","w_e","0" },
-            {"0","w_w","f","f","f","f","f","f","f","f","w_w","0" },
+            {"0","w_w","w_f","f","f","f","f","f","f","f","w_w","0" },
             {"0","wfr","wfr","wfr","wfr","wfr","wfr","wfr","wfr","wchr","w_w","0" },
             {"0","0","0","0","0","0","0","0","0","0","0","0" }
         };
@@ -169,7 +172,7 @@ namespace WindowsFormsApp1
             {"0","wl","wl","wl","wl","wlh","0" },
             {"5","wh","f","f","f","wch","5" },
             {"5","wwi","f","f","f","wwo","lg"},
-            {"5","wh","f","f","f","wch","lg" },
+            {"5","wh","w_f","f","f","wch","lg" },
             {"0","wr","wr","wr","wr","wrh","0" },
             {"0","0","0","0","0","0","0" }
        };
@@ -224,6 +227,10 @@ namespace WindowsFormsApp1
         public Form1()
         {
             this.ClientSize = new Size(960, 720);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.Name = "Form1";
+            this.Text = "Game";
 
             Map[1000] = Tuple.Create(7, 7, MapHouse);
             Map[1001] = Tuple.Create(30, 15, MapMeadow);
@@ -245,7 +252,11 @@ namespace WindowsFormsApp1
             DialogIm = new Bitmap(folder + "\\DialogFrame.png");
             HuntImg = new Bitmap(folder + "\\huntsman.png");
             DoorImg = new Bitmap(folder + "\\Door.png");
+            etc = new Bitmap(folder + "\\dynamic.png");
             music = new SoundPlayer(folder + "\\Title.wav");
+            fontCollection.AddFontFile(folder + "\\shrift.ttf");
+            FontFamily family = fontCollection.Families[0];
+            font = new Font(family, 18);
 
             player = new Player(new Size(192, 192), 196*3, 196*3, HeroImg);
             pope = new Pope(new Size(196, 196), 196*2, 196*5, PopeImg);
@@ -282,7 +293,6 @@ namespace WindowsFormsApp1
 
             this.Paint += new PaintEventHandler(OnPaint);
             Task mus = Task.Run(() => music.PlayLooping());
-
 
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -348,29 +358,31 @@ namespace WindowsFormsApp1
         {
             if (!MovementLock)
             {
-                if (e.KeyCode == Keys.W) { PlayerUp(); }
-                if (e.KeyCode == Keys.A) { PlayerLeft(); }
-                if (e.KeyCode == Keys.S) { PlayerDown(); }
-                if (e.KeyCode == Keys.D) { PlayerRight(); }
+                if (e.KeyCode == Keys.W) {if(!prDown && !prLeft && !prRight && !MovementLock) PlayerUp();prUp = true; }
+                if (e.KeyCode == Keys.A) {if(!prDown && !prUp && !prRight && !MovementLock) PlayerLeft();prLeft = true; }
+                if (e.KeyCode == Keys.S) {if(!prUp && !prLeft && !prRight && !MovementLock) PlayerDown();prDown = true; }
+                if (e.KeyCode == Keys.D) {if(!prDown && !prLeft && !prUp && !MovementLock) PlayerRight();prRight = true; }
             }
-            if (e.KeyCode == Keys.F) { isPressedAct = true;if (pope.InBound && openDialog) { openDialog = false; } else if (pope.InBound && !openDialog) { openDialog = true; }
-                                                           if (huntsman.InBound && openDialog) { openDialog = false; } else if (huntsman.InBound && !openDialog) { openDialog = true; }
+            if (e.KeyCode == Keys.F) {isPressedAct = true;if (pope.InBound && openDialog) { openDialog = false; } else if (pope.InBound && !openDialog) { openDialog = true;openInv = false;openNote = false; }
+                                                           if (huntsman.InBound && openDialog) { openDialog = false; } else if (huntsman.InBound && !openDialog) { openDialog = true; openInv = false; openNote = false; }
             }
-            if (e.KeyCode == Keys.I) { if (openInv) openInv = false; else openInv = true; }
+            if (e.KeyCode == Keys.I) { if (!openDialog) { if (openInv) openInv = false; else openInv = true; }}
             if (e.KeyCode == Keys.Q) { if (CanOpenNote) { if (openNote) openNote = false; else openNote = true; } }
             if (e.KeyCode == Keys.H) { if (openHELP) openHELP = false; else openHELP = true; }
             if (e.KeyCode == Keys.Left) { left = true; }
             if (e.KeyCode == Keys.Right) { right = true; }
-            if (e.KeyCode == Keys.E && canContinue && check()) 
+            if (e.KeyCode == Keys.E && canContinue) 
             {
                 if (openDialog && pope.InBound)
                 { 
-                    Dialog.DialogsPope.dialogStatus++;
+                    if(check())
+                        Dialog.DialogsPope.dialogStatus++;
                     canContinue = false;
                 } 
                 if (openDialog && huntsman.InBound) 
                 {
-                    Dialog.DialogsHunt.dialogStatus++;
+                    if(check())
+                        Dialog.DialogsHunt.dialogStatus++;
                     canContinue = false;
                 }
                 awaiter();
@@ -381,45 +393,39 @@ namespace WindowsFormsApp1
         {
             if (pope.InBound)
             {
-                if (player.progressBar > -1 && player.progressBar < 10)
+                if (player.progressBar == 0)
                 {
                     if (Dialog.DialogsPope.dialogStatus == 3)
                     {
                         MovementLock = false;
                         openDialog = false;
-                        Dialog.DialogsPope.dialogStatus++;
                         player.progressBar += 5;
                     }
                     return true;
                 }
-                else if (player.progressBar > 14 && player.progressBar < 21)
+                else if (player.progressBar == 15 || player.progressBar == 20)
                 {
                     if (Dialog.DialogsPope.dialogStatus == 6)
                     {
                         MovementLock = false;
                         openDialog = false;
-                        Dialog.DialogsPope.dialogStatus++;
                         player.progressBar += 5;
                     }
                     if (Dialog.DialogsPope.dialogStatus == 7 && Inventory.InInventory("Bible"))
                     {
                         player.progressBar += 5;
+                        Inventory.Drop("Bible");
                     }
                     else if(Dialog.DialogsPope.dialogStatus == 7)
                     {
                         MovementLock = false;
                         openDialog = false;
+                        return false;
                     }
                     return true;
                 }
                 else if(player.progressBar == 25)
                 {
-                    if(Dialog.DialogsPope.dialogStatus == 9)
-                    {
-                        MovementLock = false;
-                        openDialog = false;
-                        Dialog.DialogsPope.dialogStatus++;
-                    }
                     if(Dialog.DialogsPope.dialogStatus == 10 && Inventory.InInventory("WaterLily") && Inventory.InInventory("Heartflower"))
                     {
                         player.progressBar += 5;
@@ -433,6 +439,7 @@ namespace WindowsFormsApp1
                     {
                         MovementLock = false;
                         openDialog = false;
+                        return false;
                     }
                     return true;
                 }
@@ -442,6 +449,7 @@ namespace WindowsFormsApp1
                     {
                         MovementLock = false;
                         openDialog = false;
+                        return false;
                     }
                     return true;
                 }
@@ -449,47 +457,53 @@ namespace WindowsFormsApp1
                 {
                     MovementLock = false;
                     openDialog = false;
+                    return false;
                 }
             }
             if(huntsman.InBound)
             {
-                if (player.progressBar > 4 && player.progressBar < 15)
+                if (player.progressBar == 5 || player.progressBar == 10)
                 {
                     if (Dialog.DialogsHunt.dialogStatus == 3)
                     {
                         MovementLock = false;
                         openDialog = false;
-                        Dialog.DialogsHunt.dialogStatus++;
                         player.progressBar += 5;
                         Inventory.Take(new Item.Key());
                     }
                     if (Dialog.DialogsHunt.dialogStatus == 4 && Inventory.InInventory("EmptyBottle"))
                     {
                         player.progressBar += 5;
+                        return true;
                     }
                     else if(Dialog.DialogsHunt.dialogStatus == 4)
                     {
                         MovementLock = false;
                         openDialog = false;
+                        return false;
                     }
-                        return true;
+                    return true;
                 }
-                else if(player.progressBar == 15)
+                else if(player.progressBar == 15 && Dialog.DialogsHunt.dialogStatus == 5)
                 {
                     MovementLock = false;
                     openDialog = false;
                     Dialog.DialogsHunt.dialogStatus++;
+                    return false;
                 }
                 else if(player.progressBar == 30)
                 {
                     if (Dialog.DialogsHunt.dialogStatus == 7 && Inventory.InInventory("HealingPotion"))
+                    {
                         player.progressBar += 5;
-                    else if(Dialog.DialogsHunt.dialogStatus == 7)
+                        return true;
+                    }
+                    else if (Dialog.DialogsHunt.dialogStatus == 7)
                     {
                         MovementLock = false;
                         openDialog = false;
+                        return false;
                     }
-
                     return true;
                 }
                 else if (player.progressBar == 35)
@@ -499,13 +513,14 @@ namespace WindowsFormsApp1
                         MovementLock = false;
                         openDialog = false;
                         player.progressBar += 5;
+                        return false;
                     }
-                    return true;
                 }
                 else if(player.progressBar == 40)
                 {
                     MovementLock = false;
                     openDialog = false;
+                    return false;
                 }
                 else if(player.progressBar == 45)
                 {
@@ -514,6 +529,7 @@ namespace WindowsFormsApp1
                         MovementLock = false;
                         openDialog = false;
                         player.progressBar += 5;
+                        return false;
                     }
                     return true;
                 }
@@ -531,14 +547,14 @@ namespace WindowsFormsApp1
         private void awaiter()
         {
             Task.Run(async delegate
-            { await Task.Delay(1000);canContinue = true; });
+            { await Task.Delay(600);canContinue = true; });
         }
 
         private void PlayerRight()
         {
             isPressedAnyKey = true;
             player.currentAnimation = 2;
-            player.dirX = 2;
+            player.dirX = 4;
             if (GetCell((player.up_left_x + player.dirX + 192 - 50), player.up_left_y + 50)[0] != 'w' &&
                 GetCell(player.up_left_x + 192 - 50, player.up_left_y + player.dirY + 192 - 50)[0] != 'w')
             {
@@ -552,7 +568,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 1;
-            player.dirY = 2;
+            player.dirY = 4;
             if (GetCell(player.up_left_x + 50 + 20, player.up_left_y + player.dirY + 192 + 10)[0] != 'w'
                 && GetCell(player.up_left_x + 192 - 50, player.up_left_y + player.dirY + 192 + 10)[0] != 'w')
             {
@@ -566,7 +582,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 3;
-            player.dirX = -2;
+            player.dirX = -4;
             if (GetCell(player.up_left_x + player.dirX + 70, player.up_left_y + 50)[0] != 'w' &&
                 GetCell(player.up_left_x + player.dirX + 70, player.up_left_y + 192 - 50)[0] != 'w')
             {
@@ -580,7 +596,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 4;
-            player.dirY = -2;
+            player.dirY = -4;
             if (GetCell(player.up_left_x + 70, player.up_left_y + player.dirY + 50)[0] != 'w' &&
                 GetCell(player.up_left_x + 192 - 50, player.up_left_y + player.dirY + 50)[0] != 'w')
             {
@@ -592,10 +608,10 @@ namespace WindowsFormsApp1
 
         private void GameKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W) { isPressedAnyKey = false; player.dirY = 0; }
-            if (e.KeyCode == Keys.A) { isPressedAnyKey = false; player.dirX = 0; }
-            if (e.KeyCode == Keys.S) { isPressedAnyKey = false; player.dirY = 0; }
-            if (e.KeyCode == Keys.D) { isPressedAnyKey = false; player.dirX = 0; }
+            if (e.KeyCode == Keys.W) { isPressedAnyKey = false; player.dirY = 0;prUp = false; }
+            if (e.KeyCode == Keys.A) { isPressedAnyKey = false; player.dirX = 0;prLeft = false; }
+            if (e.KeyCode == Keys.S) { isPressedAnyKey = false; player.dirY = 0;prDown = false; }
+            if (e.KeyCode == Keys.D) { isPressedAnyKey = false; player.dirX = 0;prRight = false; }
             if (e.KeyCode == Keys.F) { isPressedAct = false; }
             if (e.KeyCode == Keys.Left) { left = false; }
             if (e.KeyCode == Keys.Right) { right = false; }
@@ -670,7 +686,7 @@ namespace WindowsFormsApp1
                 gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 1, 196 * 0), new Size(196, 196)), GraphicsUnit.Pixel);
                 gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 7, 196 * 0), new Size(196, 196)), GraphicsUnit.Pixel);
             }
-            else if (CurrentMap[x, y] == "f")
+            else if (CurrentMap[x, y] == "f" || CurrentMap[x, y] == "w_f")
                 gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 8, 196 * 2), new Size(196, 196)), GraphicsUnit.Pixel);
             else if (CurrentMap[x, y] == "0")
                 gr.DrawImage(GrassImg, x * 196 + delta.X, y * 196 + delta.Y, new Rectangle(new Point(196 * 8, 196 * 4), new Size(196, 196)), GraphicsUnit.Pixel);
@@ -1228,9 +1244,7 @@ namespace WindowsFormsApp1
             if (pope.InBound)
             {
                 if(isPressedAct)
-                {
                     MovementLock = true;
-                }
                 inDynObj = 1;
             }
             if(huntsman.InBound)
@@ -1327,13 +1341,15 @@ namespace WindowsFormsApp1
             var b = 3 * 196 + delta.Y;
             rightDoor.x = a - delta.X;
             rightDoor.y = b - delta.Y;
+            gr.DrawImage(etc, 196 * 4 + delta.X, 196 * 4 + delta.Y, new Rectangle(new Point(1 * 196, 0), new Size(196, 196)), GraphicsUnit.Pixel);
+            gr.DrawImage(etc, 196 * 4 + delta.X, 196 * 2 + delta.Y, new Rectangle(new Point(3 * 196, 196), new Size(196, 196)), GraphicsUnit.Pixel);
             if (Notebook.Item2)
             {
                 var c = 3 * 196 + delta.X;
-                var d = 2 * 196 + delta.Y;
+                var d = 1 * 196 + delta.Y;
                 Notebook.Item1.x = c - delta.X;
                 Notebook.Item1.y = d - delta.Y;
-                gr.DrawImage(InventoryGr, c + 196 + 50, d + 196 + 50, new Rectangle(new Point(64 * 5, 0), new Size(64, 64)), GraphicsUnit.Pixel);
+                gr.DrawImage(InventoryGr, c + 196 + 50, d + 196 + 30, new Rectangle(new Point(64 * 5, 0), new Size(64, 64)), GraphicsUnit.Pixel);
             }
             //
             downDoor.x = -50 + delta.X;
@@ -1372,7 +1388,7 @@ namespace WindowsFormsApp1
             var d = 2 * 196 + delta.Y;
             leftDoor.x = c - delta.X;
             leftDoor.y = d - delta.Y;
-            var e = 10 * 196 + delta.X;
+            var e = 11 * 196 + delta.X;
             var f = 1 * 196 + delta.Y;
             upDoor.x = e - delta.X;
             upDoor.y = f - delta.Y;
@@ -1522,6 +1538,12 @@ namespace WindowsFormsApp1
         {
             pope.IsChurch = true;
             huntsman.IsHuntHouse = false;
+            gr.DrawImage(etc, 196 * 4 + delta.X, 196 * 2 + delta.Y, new Rectangle(new Point(3 * 196, 196), new Size(196, 196)), GraphicsUnit.Pixel);
+            gr.DrawImage(etc, 196 * 3 + delta.X, 196 * 5 + delta.Y, new Rectangle(new Point(2 * 196, 0 * 196), new Size(196, 196)), GraphicsUnit.Pixel);
+            gr.DrawImage(etc, 196 * 3 + delta.X, 196 * 6 + delta.Y, new Rectangle(new Point(0 * 196, 0 * 196), new Size(196, 196)), GraphicsUnit.Pixel);
+            gr.DrawImage(etc, 196 * 3 + delta.X, 196 * 7 + delta.Y, new Rectangle(new Point(0 * 196, 0 * 196), new Size(196, 196)), GraphicsUnit.Pixel);
+            gr.DrawImage(etc, 196 * 3 + delta.X, 196 * 8 + delta.Y, new Rectangle(new Point(0 * 196, 0 * 196), new Size(196, 196)), GraphicsUnit.Pixel);
+            gr.DrawImage(etc, 196 * 3 + delta.X, 196 * 9 + delta.Y, new Rectangle(new Point(1 * 196, 1 * 196), new Size(196, 196)), GraphicsUnit.Pixel);
             var c = 1 * 196 + delta.X;
             var d = 3 * 196 + delta.Y;
             pope.x = c - delta.X;
@@ -1539,10 +1561,10 @@ namespace WindowsFormsApp1
             if (bible.Item2)
             {
                 var e = 3 * 196 + delta.X;
-                var f = 2 * 196 + delta.Y;
+                var f = 1 * 196 + delta.Y;
                 bible.Item1.x = e - delta.X;
                 bible.Item1.y = f - delta.Y;
-                gr.DrawImage(InventoryGr, e + 196 + 50, f + 196 + 50, new Rectangle(new Point(64 * 1, 0), new Size(64, 64)), GraphicsUnit.Pixel);
+                gr.DrawImage(InventoryGr, e + 196 + 50, f + 196 + 30, new Rectangle(new Point(64 * 1, 0), new Size(64, 64)), GraphicsUnit.Pixel);
             }
 
             // 
@@ -1644,6 +1666,7 @@ namespace WindowsFormsApp1
         {
             pope.IsChurch = false;
             huntsman.IsHuntHouse = false;
+            gr.DrawImage(etc, 196 * 4 + delta.X, 196 * 1 + delta.Y, new Rectangle(new Point(2 * 196, 1 * 196), new Size(196, 196)), GraphicsUnit.Pixel);
             var a = 1 * 196 + delta.X;
             var b = 1 * 196 + delta.Y;
             downDoor.x = -50 + delta.X;
@@ -1657,10 +1680,10 @@ namespace WindowsFormsApp1
             if (emptyBottle.Item2)
             {
                 var c = 3 * 196 + delta.X;
-                var d = 1 * 196 + delta.Y;
+                var d = 0 * 196 + delta.Y;
                 emptyBottle.Item1.x = c - delta.X;
                 emptyBottle.Item1.y = d - delta.Y;
-                gr.DrawImage(InventoryGr, c + 196 + 50, d + 196 + 50, new Rectangle(new Point(64 * 0, 64 * 1), new Size(64, 64)), GraphicsUnit.Pixel);
+                gr.DrawImage(InventoryGr, c + 196 + 50, d + 196 + 70, new Rectangle(new Point(64 * 0, 64 * 1), new Size(64, 64)), GraphicsUnit.Pixel);
             }
             // 
             heartflower1.Item1.x = -50 + delta.X;
@@ -1767,23 +1790,23 @@ namespace WindowsFormsApp1
                     }
                 }
                 if(player.progressBar == 0)
-                    gr.DrawString(Text = "Поговорите со священиком\nВангоричем,который сейчас\nнаходится в церкви.\n\n\n(Местонахождение церкви:\nВправо,Вправо,Вправо)", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Поговорите со священиком\nВангоричем,который сейчас\nнаходится в церкви.\n\n\n(Местонахождение церкви:\nВправо,Вправо,Вправо)", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar == 5)
-                    gr.DrawString(Text = "Попросите помощи у лесничего Дувина", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Попросите помощи у лесничего\nДувина", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar == 10)
-                    gr.DrawString(Text = "Поднимитесь на чердак и\nпринесите Дувину лечебное зелье", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Поднимитесь на чердак и\nпринесите Дувину лечебное зелье", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar == 15)
-                    gr.DrawString(Text = "Поговорите с Вангоричем", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Поговорите с Вангоричем", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar == 20)
-                    gr.DrawString(Text = "Найдите в церкви\nкнигу Вангорича", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Найдите в церкви\nкнигу Вангорича", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar == 25)
-                    gr.DrawString(Text = "Найдите и соберите все\nингридиенты для \n\n                ЗЕЛЬЕ ЛЕЧЕНИЯ\n\n\nВодяная Лилия\nСердцецвет\nПустой флакон", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Найдите и соберите все\nингридиенты для \n\n                ЗЕЛЬЕ ЛЕЧЕНИЯ\n\n\nВодяная Лилия\nСердцецвет\nПустой флакон", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar == 30)
-                    gr.DrawString(Text = "Отнесите лечебное зелье лесничему", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Отнесите лечебное зелье\nлесничему", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if(player.progressBar >= 35 && player.progressBar <=45)
-                    gr.DrawString(Text = "Идите к мосту в лесу и \nпоговорите там с Дувином", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Идите к мосту в лесу и \nпоговорите там с Дувином", font, new SolidBrush(Color.Black), new Point(575, 30));
                 if (player.progressBar == 50)
-                    gr.DrawString(Text = "Поговорите с Вангоричем", new Font("Franklin Gothic Heavy", 15, FontStyle.Regular), new SolidBrush(Color.Black), new Point(575, 30));
+                    gr.DrawString(Text = "Поговорите с Вангоричем", font, new SolidBrush(Color.Black), new Point(575, 30));
             }
         }
 
@@ -1791,11 +1814,11 @@ namespace WindowsFormsApp1
         {
             try
             {
-                gr.DrawString(Text = Inventory.inventory[x + y * 4].Describes, new Font("Franklin Gothic Medium", 15, FontStyle.Italic), new SolidBrush(Color.White), new Point(30, 64*8));
+                gr.DrawString(Text = Inventory.inventory[x + y * 4].Describes, font, new SolidBrush(Color.White), new Point(3, 64*8));
             }
             catch
             {
-                gr.DrawString(Text = "", new Font("Franklin Gothic Heavy", 15, FontStyle.Underline), new SolidBrush(Color.Red), new Point(30, 64*8));
+                gr.DrawString(Text = "", font, new SolidBrush(Color.Red), new Point(30, 64*8));
             }
         }
 
@@ -1806,12 +1829,12 @@ namespace WindowsFormsApp1
                 gr.DrawImage(DialogIm, 40, 400, new Rectangle(new Point(0, 0), new Size(900, 300)), GraphicsUnit.Pixel);
                 if (pope.InBound)
                 {
-                    try { gr.DrawString(Text = Dialog.DialogsPope.Dialog[Dialog.DialogsPope.dialogStatus], new Font("Franklin Gothic Heavy", 18, FontStyle.Regular), new SolidBrush(Color.White), new Point(50, 410)); }
+                    try { gr.DrawString(Text = Dialog.DialogsPope.Dialog[Dialog.DialogsPope.dialogStatus], font, new SolidBrush(Color.White), new Point(50, 410)); }
                     catch {; }
                 }
                 if (huntsman.InBound)
                 {
-                    try { gr.DrawString(Text = Dialog.DialogsHunt.Dialog[Dialog.DialogsHunt.dialogStatus], new Font("Franklin Gothic Heavy", 18, FontStyle.Regular), new SolidBrush(Color.White), new Point(50, 410)); }
+                    try { gr.DrawString(Text = Dialog.DialogsHunt.Dialog[Dialog.DialogsHunt.dialogStatus], font, new SolidBrush(Color.White), new Point(50, 410)); }
                     catch {; }
                 }
             }

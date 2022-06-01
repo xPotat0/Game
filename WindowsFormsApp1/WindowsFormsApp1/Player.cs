@@ -43,7 +43,7 @@ namespace WindowsFormsApp1
                     break;
                 case 1103:
                     if (from == 1102) { x = 4; y = 6; }
-                    if (from == 1104) { x = 3; y = 2; }
+                    if (from == 1104) { x = 3; y = 3; }
                     break;
                 case 1104:
                     if (from == 1103) { x = 2; y = 2; }
@@ -55,7 +55,7 @@ namespace WindowsFormsApp1
                     if (from == 999) { x = 3; y = 3; }
                     if (from == 1000) { x = 11; y = 3; }
                     if (from == 1002) { x = 15; y = 3; }
-                    if (from == 901) { x = 19; y = 5; }
+                    if (from == 901) { x = 13; y = 2; }
                     break;
                 case 1002:
                     if (from == 1001) { x = 3; y = 3; }
