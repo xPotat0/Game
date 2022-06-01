@@ -132,7 +132,7 @@ namespace WindowsFormsApp1
             {"wt","wt","wt","wt","wt","wt","5","wt","wt","wt" },
             {"wt","w_dor","5","wt","wt","wt","w_dl_lk","wt","wt","wt" },
             {"wt","wt","lg","g","wt","wt","5","wt","wt","wt" },
-            {"wt","wt","mg","mg","g","g",",g","wt","wt","wt" },
+            {"wt","wt","mg","mg","g","g","g","wt","wt","wt" },
             {"wt","wt","wt","5","mg","5","mg","5","w_dor","wt" },
             {"wt","wt","wt","lg","lg","g","lg","wt","wt","wt" },
             {"wt","wt","wt","g","5","lg","5","wt","wt","wt" },
@@ -222,7 +222,6 @@ namespace WindowsFormsApp1
         public static string[,] CurrentMap = MapHouse;
         public static int CurrentMapStatus = 1000;
         public static Tuple<int,int,string[,]>[] Map = new Tuple<int, int, string[,]>[2000];
-        int sideOfMapObject = 64;
 
         public Form1()
         {
@@ -554,7 +553,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 2;
-            player.dirX = 4;
+            player.dirX = 10;
             if (GetCell((player.up_left_x + player.dirX + 192 - 50), player.up_left_y + 50)[0] != 'w' &&
                 GetCell(player.up_left_x + 192 - 50, player.up_left_y + player.dirY + 192 - 50)[0] != 'w')
             {
@@ -568,7 +567,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 1;
-            player.dirY = 4;
+            player.dirY = 10;
             if (GetCell(player.up_left_x + 50 + 20, player.up_left_y + player.dirY + 192 + 10)[0] != 'w'
                 && GetCell(player.up_left_x + 192 - 50, player.up_left_y + player.dirY + 192 + 10)[0] != 'w')
             {
@@ -582,7 +581,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 3;
-            player.dirX = -4;
+            player.dirX = -10;
             if (GetCell(player.up_left_x + player.dirX + 70, player.up_left_y + 50)[0] != 'w' &&
                 GetCell(player.up_left_x + player.dirX + 70, player.up_left_y + 192 - 50)[0] != 'w')
             {
@@ -596,7 +595,7 @@ namespace WindowsFormsApp1
         {
             isPressedAnyKey = true;
             player.currentAnimation = 4;
-            player.dirY = -4;
+            player.dirY = -10;
             if (GetCell(player.up_left_x + 70, player.up_left_y + player.dirY + 50)[0] != 'w' &&
                 GetCell(player.up_left_x + 192 - 50, player.up_left_y + player.dirY + 50)[0] != 'w')
             {
