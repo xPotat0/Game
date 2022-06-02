@@ -54,11 +54,11 @@ namespace WindowsFormsApp1
                 case 1001:
                     if (from == 999) { x = 3; y = 3; }
                     if (from == 1000) { x = 11; y = 3; }
-                    if (from == 1002) { x = 15; y = 3; }
+                    if (from == 1002) { x = 21; y = 7; }
                     if (from == 901) { x = 13; y = 2; }
                     break;
                 case 1002:
-                    if (from == 1001) { x = 3; y = 3; }
+                    if (from == 1001) { x = 3; y = 6; }
                     if (from == 902) { x = 2; y = 2; }
                     if (from == 1003) { x = 8; y = 6; }
                     if (from == 1102) { x = 5;y = 6; }
@@ -73,7 +73,7 @@ namespace WindowsFormsApp1
                     break;
                 case 902:
                     if (from == 901) { x = 3; y = 17; }
-                    if (from == 1002) { x = 17; y = 16; }
+                    if (from == 1002) { x = 16; y = 16; }
                     break;
                 case 903:
                     if (from == 1003) { x = 3; y = 9; }
@@ -122,6 +122,24 @@ namespace WindowsFormsApp1
             this.y = y;
             this._spritesAnimation = _spriteAnimation;
             IsHuntHouse = false;
+        }
+    }
+
+    public class Nameplate
+    {
+        public Image _spritesAnimation;
+        public int x, y;
+        public Size _scale;
+        public Image part;
+        public bool IsCrossroad { get; set; }
+        public bool InBound { get; set; }
+        public Nameplate(Size _scale, int x, int y, Image _spriteAnimation)
+        {
+            this._scale = _scale;
+            this.x = x;
+            this.y = y;
+            this._spritesAnimation = _spriteAnimation;
+            IsCrossroad = false;
         }
     }
 
